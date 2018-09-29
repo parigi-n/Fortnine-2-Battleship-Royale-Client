@@ -2,7 +2,10 @@
   "name": "fortnine2",
   "version": "0.1.0",
   "private": true,
+  "main": "lib/index.js",
   "dependencies": {
+    "babel-loader": "^8.0.4",
+    "babel-preset-react": "^6.24.1",
     "flowtype": "^2.0.0",
     "react": "^16.5.1",
     "react-dom": "^16.5.1",
@@ -13,8 +16,15 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "babel src/ -d lib/",
     "test": "react-scripts test --env=jsdom",
+    "prepublish": "npm run build",
+    "flow": "flow",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-flow": "^6.23.0",
+    "flow-bin": "^0.81.0"
   }
 }
