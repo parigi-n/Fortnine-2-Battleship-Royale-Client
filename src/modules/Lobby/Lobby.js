@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 class Lobby extends Component {
-  render(){
+  render() {
     return (
       <div className="Lobby">
           MDR C VID
