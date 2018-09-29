@@ -1,0 +1,20 @@
+.popup{
+  position: fixed;
+  top: 15px;
+}
+
+.error{
+  background-color: red;
+}
+
+.info{
+  background-color: blue;
+}
+
+.warning{
+  background-color: yellow;
+}
+
+.complete{
+  background-color: green;
+}
