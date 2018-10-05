@@ -7,6 +7,7 @@ class CreateAccount extends Component {
     super(props);
     this.state = {
       email: '',
+      username: '',
       password: '',
       confirmpassword: '',
     };
@@ -23,27 +24,50 @@ class CreateAccount extends Component {
   }
 
   loginAccount(event) {
-    const { email, password, confirmpassword } = this.state;
-    if (email !== '' && password !== '' && confirmpassword !== '') {
+    const {
+      email, username, password, confirmpassword,
+    } = this.state;
+    if (email !== '' && username !== '' && password !== '' && confirmpassword !== '') {
       if (password === confirmpassword) {
-        console.log(`Create account request send email : ${email} password : ${password}`);
+        const data = new FormData();
+        data.append('password', password);
+        data.append('username', username);
+        data.append('email', email);
+
+        fetch('http://localhost:3000/auth/register', {
+          method: 'POST',
+          body: data,
+        }).then((response) => {
+          if (response.ok) {
+            return 'Account create';// response.headers.get('authorization');
+          }
+          throw new Error('Network response was not ok.');
+        }).catch((error) => {
+          console.log('There has been a problem with your fetch operation: ', error.message);
+        });
       } else {
         console.log("passwords doesn't match");
       }
     } else {
-      // error you must complete every field
+      console.log('all fields are mendatory');
     }
     event.preventDefault();
   }
 
   render() {
-    const { email, password, confirmpassword } = this.state;
+    const {
+      email, username, password, confirmpassword,
+    } = this.state;
     return (
       <div className="login_form">
         <form onSubmit={this.loginAccount}>
           <div className="login_block">
             <p className="login_block_text">Email</p>
             <input name="email" className="login_input" type="text" value={email} onChange={this.handleChange} />
+          </div>
+          <div className="login_block">
+            <p className="login_block_text">Username</p>
+            <input name="username" className="login_input" type="text" value={username} onChange={this.handleChange} />
           </div>
           <div className="login_block">
             <p className="login_block_text">Password</p>
@@ -53,7 +77,7 @@ class CreateAccount extends Component {
             <p className="login_block_text">Confirm password</p>
             <input name="confirmpassword" className="login_input" type="password" value={confirmpassword} onChange={this.handleChange} />
           </div>
-          <input className="login_button" type="submit" value="Login" />
+          <input className="login_button" type="submit" value="Create" />
           <p>
             <Link to="/">You already have an account login</Link>
           </p>

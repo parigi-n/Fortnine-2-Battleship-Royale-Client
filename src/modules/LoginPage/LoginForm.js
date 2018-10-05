@@ -6,7 +6,7 @@ class LoginForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
+      username: '',
       password: '',
     };
 
@@ -23,21 +23,44 @@ class LoginForm extends Component {
   }
 
   loginAccount(event) {
-    const { email, password } = this.state;
-    if (email !== '' && password !== '') {
-      console.log(`Login request send email : ${email} password : ${password}`);
+    const { username, password } = this.state;
+    if (username !== '' && password !== '') {
+      const data = new FormData();
+      data.append('password', password);
+      data.append('username', username);
+
+      fetch('http://localhost:3000/auth/login', {
+        method: 'POST',
+        body: data,
+      }).then((response) => {
+        if (response.ok) {
+          return response.headers.get('authorization');
+        }
+        throw new Error('Network response was not ok.');
+      }).then((tokenAuth) => {
+        fetch('http://localhost:3000/auth/logout', {
+          method: 'GET',
+          headers: {
+            Authorization: tokenAuth,
+          },
+        }).then((response) => {
+          console.log(response);
+        });
+      }).catch((error) => {
+        console.log('There has been a problem with your fetch operation: ', error.message);
+      });
     }
     event.preventDefault();
   }
 
   render() {
-    const { email, password } = this.state;
+    const { username, password } = this.state;
     return (
       <div className="login_form">
         <form onSubmit={this.loginAccount}>
           <div className="login_block">
-            <p className="login_block_text">Email</p>
-            <input name="email" className="login_input" type="text" value={email} onChange={this.handleChange} />
+            <p className="login_block_text">Username</p>
+            <input name="username" className="login_input" type="text" value={username} onChange={this.handleChange} />
           </div>
           <div className="login_block">
             <p className="login_block_text">Password</p>
