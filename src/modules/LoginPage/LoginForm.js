@@ -38,7 +38,7 @@ class LoginForm extends Component {
         }
         throw new Error('Network response was not ok.');
       }).then((tokenAuth) => {
-        fetch('http://localhost:3000/auth/logout', {
+        fetch('http://localhost:3000/user/me', {
           method: 'GET',
           headers: {
             Authorization: tokenAuth,
@@ -55,6 +55,7 @@ class LoginForm extends Component {
 
   render() {
     const { username, password } = this.state;
+
     return (
       <div className="login_form">
         <form onSubmit={this.loginAccount}>
