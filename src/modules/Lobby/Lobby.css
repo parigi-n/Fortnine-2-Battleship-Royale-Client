@@ -1,0 +1,12 @@
+.join_button{
+  border-radius: 2px;
+  color: white;
+  border: white;
+  margin-left: 10px;
+  background-color: black;
+  padding: 10px 25px;
+}
+
+.Room {
+  margin-top: 10px;
+}
