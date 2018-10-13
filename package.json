@@ -25,6 +25,8 @@
     "test": "react-scripts test --env=jsdom",
     "prepublish": "npm run build",
     "flow": "flow",
+    "lint": "eslint src/",
+    "lintfix": "eslint --fix src/",
     "eject": "react-scripts eject"
   },
   "devDependencies": {

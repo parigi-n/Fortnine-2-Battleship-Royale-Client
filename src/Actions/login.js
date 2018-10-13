@@ -1,7 +1,9 @@
-export const setUser = (token, id, email, username ) => ({
+const setUser = (token, id, email, username) => ({
   type: 'SET_USER',
   token,
   id,
   email,
   username,
 });
+
+export default setUser;

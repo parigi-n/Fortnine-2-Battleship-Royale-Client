@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import  setUser from '../../Actions/login'
 import './LoginPage.css';
 
 class LoginForm extends Component {
@@ -23,11 +25,13 @@ class LoginForm extends Component {
   }
 
   loginAccount(event) {
+    const { dispatch } = this.props;
     const { username, password } = this.state;
     if (username !== '' && password !== '') {
       const data = new FormData();
       data.append('password', password);
       data.append('username', username);
+      //dispatch(setUser('1111', 4, 'sze@gmail.com', 'JeanMifan'));
 
       fetch('http://localhost:3000/auth/login', {
         method: 'POST',
@@ -78,4 +82,4 @@ class LoginForm extends Component {
   }
 }
 
-export default LoginForm;
+export default connect()(LoginForm);
