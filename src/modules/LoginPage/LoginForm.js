@@ -38,8 +38,9 @@ class LoginForm extends Component {
         }
         throw new Error('Network response was not ok.');
       }).then((tokenAuth) => {
-        fetch('http://localhost:3000/user/me', {
+        fetch('http://localhost:3000/users/me', {
           method: 'GET',
+          mode: 'cors',
           headers: {
             Authorization: tokenAuth,
           },
