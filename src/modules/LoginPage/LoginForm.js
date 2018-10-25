@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import  setUser from '../../Actions/login'
+import { loginSuccess } from '../../Actions/login';
 import './LoginPage.css';
 
 class LoginForm extends Component {
@@ -31,7 +31,7 @@ class LoginForm extends Component {
       const data = new FormData();
       data.append('password', password);
       data.append('username', username);
-      //dispatch(setUser('1111', 4, 'sze@gmail.com', 'JeanMifan'));
+      // dispatch(setUser('1111', 4, 'sze@gmail.com', 'JeanMifan'));
 
       fetch('http://localhost:3000/auth/login', {
         method: 'POST',
@@ -48,8 +48,8 @@ class LoginForm extends Component {
           headers: {
             Authorization: tokenAuth,
           },
-        }).then((response) => {
-          console.log(response);
+        }).then(response => response.json()).then((jsonResponse) => {
+          dispatch(loginSuccess(tokenAuth, jsonResponse.id, jsonResponse.email, jsonResponse.username));
         });
       }).catch((error) => {
         console.log('There has been a problem with your fetch operation: ', error.message);

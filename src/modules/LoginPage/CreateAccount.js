@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { loginSuccess } from '../../Actions/login';
 import './LoginPage.css';
 
 class CreateAccount extends Component {
@@ -88,4 +90,4 @@ class CreateAccount extends Component {
 }
 
 
-export default CreateAccount;
+export default connect()(CreateAccount);
