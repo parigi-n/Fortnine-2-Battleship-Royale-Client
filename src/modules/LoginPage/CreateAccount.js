@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { loginSuccess } from '../../Actions/login';
+import { createFetch } from '../../Actions/login';
 import './LoginPage.css';
 
 class CreateAccount extends Component {
@@ -36,17 +36,7 @@ class CreateAccount extends Component {
         data.append('username', username);
         data.append('email', email);
 
-        fetch('http://localhost:3000/auth/register', {
-          method: 'POST',
-          body: data,
-        }).then((response) => {
-          if (response.ok) {
-            return 'Account create';// response.headers.get('authorization');
-          }
-          throw new Error('Network response was not ok.');
-        }).catch((error) => {
-          console.log('There has been a problem with your fetch operation: ', error.message);
-        });
+        this.props.fetchCreate(data);
       } else {
         console.log("passwords doesn't match");
       }
@@ -56,12 +46,20 @@ class CreateAccount extends Component {
     event.preventDefault();
   }
 
+  renderRedirect = () => {
+    if (this.props.userConnect === true) {
+      return <Redirect to='/lobby' />
+    }
+  }
+
   render() {
     const {
       email, username, password, confirmpassword,
     } = this.state;
     return (
       <div className="login_form">
+      {this.renderRedirect()}
+      <p className="error_box">{this.props.hasErrored}</p>
         <form onSubmit={this.loginAccount}>
           <div className="login_block">
             <p className="login_block_text">Email</p>
@@ -89,5 +87,30 @@ class CreateAccount extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  if (state.user.error){
+    return {
+      hasErrored: "Error : this account already exist",
+      userConnect: false,
+    };
+  } else if ( state.user.id ){
+    return {
+      hasErrored: "",
+      userConnect: true,
+    };
+  } else {
+    return {
+      hasErrored: "",
+      userConnect: false,
+    };
+  }
+};
 
-export default connect()(CreateAccount);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchCreate: (data) => dispatch(createFetch(data)),
+    };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateAccount);

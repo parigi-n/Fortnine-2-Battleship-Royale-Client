@@ -18,7 +18,6 @@ export const loginLoading = loading => ({
 
 export const loginFetch = data => (dispatch) => {
   let token = '';
-  dispatch(loginLoading(true));
   fetch('http://localhost:3000/auth/login', {
     method: 'POST',
     body: data,
@@ -27,10 +26,29 @@ export const loginFetch = data => (dispatch) => {
       token = response.headers.get('authorization');
       return response.json();
     }
-    dispatch(loginLoading(false));
     throw new Error('Network response was not ok.');
   }).then((json) => {
     dispatch(loginSuccess(token, json.user.id, json.user.email, json.user.username));
+  })
+    .catch(() => {
+      dispatch(loginError(true));
+    });
+};
+
+export const createFetch = data => (dispatch) => {
+  let token = '';
+  fetch('http://localhost:3000/auth/register', {
+    method: 'POST',
+    body: data,
+  }).then((response) => {
+    if (response.ok) {
+      token = response.headers.get('authorization');
+      return response.json();
+    }
+    throw new Error('Network response was not ok.');
+  }).then((json) => {
+    console.log(json);
+    dispatch(loginSuccess(token, json.id, json.email, json.username));
   })
     .catch(() => {
       dispatch(loginError(true));
