@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { loginSuccess } from '../../Actions/login';
+import { loginFetch } from '../../Actions/login';
 import './LoginPage.css';
 
 class LoginForm extends Component {
@@ -31,31 +31,16 @@ class LoginForm extends Component {
       const data = new FormData();
       data.append('password', password);
       data.append('username', username);
-      // dispatch(setUser('1111', 4, 'sze@gmail.com', 'JeanMifan'));
 
-      fetch('http://localhost:3000/auth/login', {
-        method: 'POST',
-        body: data,
-      }).then((response) => {
-        if (response.ok) {
-          return response.headers.get('authorization');
-        }
-        throw new Error('Network response was not ok.');
-      }).then((tokenAuth) => {
-        fetch('http://localhost:3000/users/me', {
-          method: 'GET',
-          mode: 'cors',
-          headers: {
-            Authorization: tokenAuth,
-          },
-        }).then(response => response.json()).then((jsonResponse) => {
-          dispatch(loginSuccess(tokenAuth, jsonResponse.id, jsonResponse.email, jsonResponse.username));
-        });
-      }).catch((error) => {
-        console.log('There has been a problem with your fetch operation: ', error.message);
-      });
+      this.props.fetchLogin(data);
     }
     event.preventDefault();
+  }
+
+  renderRedirect = () => {
+    if (this.props.userConnect === true) {
+      return <Redirect to='/lobby' />
+    }
   }
 
   render() {
@@ -63,6 +48,8 @@ class LoginForm extends Component {
 
     return (
       <div className="login_form">
+      {this.renderRedirect()}
+      <p className="error_box">{this.props.hasErrored}</p>
         <form onSubmit={this.loginAccount}>
           <div className="login_block">
             <p className="login_block_text">Username</p>
@@ -82,4 +69,29 @@ class LoginForm extends Component {
   }
 }
 
-export default connect()(LoginForm);
+const mapStateToProps = (state) => {
+  if (state.user.error){
+    return {
+      hasErrored: "Error : Wrong Id or Password please retry",
+      userConnect: false,
+    };
+  } else if ( state.user.id ){
+    return {
+      hasErrored: "",
+      userConnect: true,
+    };
+  } else {
+    return {
+      hasErrored: "",
+      userConnect: false,
+    };
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchLogin: (data) => dispatch(loginFetch(data)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);

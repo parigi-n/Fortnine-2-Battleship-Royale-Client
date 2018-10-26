@@ -17,33 +17,20 @@ export const loginLoading = loading => ({
 });
 
 export const loginFetch = data => (dispatch) => {
+  let token = '';
   dispatch(loginLoading(true));
   fetch('http://localhost:3000/auth/login', {
     method: 'POST',
     body: data,
   }).then((response) => {
     if (response.ok) {
-      return response.headers.get('authorization');
+      token = response.headers.get('authorization');
+      return response.json();
     }
     dispatch(loginLoading(false));
     throw new Error('Network response was not ok.');
-  }).then((tokenAuth) => {
-    fetch('http://localhost:3000/users/me', {
-      method: 'GET',
-      mode: 'cors',
-      headers: {
-        Authorization: tokenAuth,
-      },
-    }).then((response) => {
-      dispatch(loginLoading(false));
-      if (response.ok) {
-        return response.json();
-      }
-      throw new Error('Network response was not ok.');
-    })
-      .then((item) => {
-        dispatch(loginSuccess(tokenAuth, item.id, item.email, item.username));
-      });
+  }).then((json) => {
+    dispatch(loginSuccess(token, json.user.id, json.user.email, json.user.username));
   })
     .catch(() => {
       dispatch(loginError(true));
