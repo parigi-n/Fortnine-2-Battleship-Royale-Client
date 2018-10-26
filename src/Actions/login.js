@@ -6,6 +6,11 @@ export const loginSuccess = (token, id, email, username) => ({
   username,
 });
 
+export const loginDisconnect = (bool) => ({
+  type: 'LOGIN_DISCONNECT',
+  bool,
+});
+
 export const loginError = error => ({
   type: 'LOGIN_ERROR',
   error,
@@ -47,10 +52,24 @@ export const createFetch = data => (dispatch) => {
     }
     throw new Error('Network response was not ok.');
   }).then((json) => {
-    console.log(json);
     dispatch(loginSuccess(token, json.id, json.email, json.username));
-  })
-    .catch(() => {
-      dispatch(loginError(true));
-    });
+  }).catch(() => {
+    dispatch(loginError(true));
+  });
+};
+
+export const disconnectFetch = token => (dispatch) => {
+  fetch('http://localhost:3000/auth/logout', {
+    method: 'GET',
+    headers: {
+      Authorization: token,
+    },
+  }).then((response) => {
+    if (response.ok) {
+      dispatch(loginDisconnect(true));
+    }
+    throw new Error('Network response was not ok.');
+  }).catch(() => {
+    dispatch(loginError(true));
+  });
 };

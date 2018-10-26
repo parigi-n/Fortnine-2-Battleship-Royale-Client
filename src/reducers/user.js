@@ -11,6 +11,10 @@ const user = (state = [], action) => {
       return {
         error: action.error,
       };
+    case 'LOGIN_DISCONNECT':
+      return {
+        disconnect: action.bool,
+      };
     default:
       return state;
   }

@@ -43,6 +43,17 @@
   margin-bottom: 10px;
 }
 
+.user-card{
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  color: white;
+}
+
+.user-card a{
+  color: white;
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

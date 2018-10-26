@@ -25,7 +25,6 @@ class LoginForm extends Component {
   }
 
   loginAccount(event) {
-    const { dispatch } = this.props;
     const { username, password } = this.state;
     if (username !== '' && password !== '') {
       const data = new FormData();
