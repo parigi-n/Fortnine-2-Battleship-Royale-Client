@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { translate } from 'react-translate';
+import PropTypes from 'prop-types';
 import { createFetch } from '../../Actions/login';
 import './LoginPage.css';
 
@@ -31,15 +32,14 @@ class CreateAccount extends Component {
     const {
       email, username, password, confirmpassword,
     } = this.state;
-    const { t } = this.props;
+    const { t, fetchCreate } = this.props;
     if (email !== '' && username !== '' && password !== '' && confirmpassword !== '') {
       if (password === confirmpassword) {
         const data = new FormData();
         data.append('password', password);
         data.append('username', username);
         data.append('email', email);
-
-        this.props.fetchCreate(data);
+        fetchCreate(data);
       } else {
         this.setState({ errorMessage: t('ERROR_PM') });
       }
@@ -50,21 +50,23 @@ class CreateAccount extends Component {
   }
 
   renderRedirect = () => {
-    if (this.props.userConnect === true) {
+    const { userConnect } = this.props;
+    if (userConnect === true) {
       return <Redirect to="/lobby" />;
     }
+    // Il faut retourner quelque chose ici
   }
 
   render() {
     const {
       email, username, password, confirmpassword, errorMessage,
     } = this.state;
-    const { t } = this.props;
+    const { t, hasErrored } = this.props;
 
     return (
       <div className="login_form">
         {this.renderRedirect()}
-        <p className="error_box">{(this.props.hasErrored) ? t('ERROR') : errorMessage}</p>
+        <p className="error_box">{(hasErrored) ? t('ERROR') : errorMessage}</p>
         <form onSubmit={this.loginAccount}>
           <div className="login_block">
             <p className="login_block_text">{t('EMAIL')}</p>
@@ -91,6 +93,18 @@ class CreateAccount extends Component {
     );
   }
 }
+
+CreateAccount.propTypes = {
+  t: PropTypes.func.isRequired,
+  fetchCreate: PropTypes.func.isRequired,
+  hasErrored: PropTypes.bool,
+  userConnect: PropTypes.bool,
+};
+
+CreateAccount.defaultProps = {
+  hasErrored: false,
+  userConnect: false,
+};
 
 const mapStateToProps = (state) => {
   if (state.user.error) {

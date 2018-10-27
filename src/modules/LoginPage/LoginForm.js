@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { translate } from 'react-translate';
+import PropTypes from 'prop-types';
 import { loginFetch } from '../../Actions/login';
 import './LoginPage.css';
 
@@ -28,14 +29,14 @@ class LoginForm extends Component {
 
   loginAccount(event) {
     const { username, password } = this.state;
-    const { t } = this.props;
+    const { t, fetchLogin } = this.props;
 
     if (username !== '' && password !== '') {
       const data = new FormData();
       data.append('password', password);
       data.append('username', username);
 
-      this.props.fetchLogin(data);
+      fetchLogin(data);
     } else {
       this.setState({ errorMessage: t('ERROR_FIELD') });
     }
@@ -43,19 +44,21 @@ class LoginForm extends Component {
   }
 
   renderRedirect = () => {
-    if (this.props.userConnect === true) {
+    const { userConnect } = this.props;
+    if (userConnect === true) {
       return <Redirect to="/lobby" />;
     }
+    // Il faut faire un return ici
   }
 
   render() {
     const { username, password, errorMessage } = this.state;
-    const { t } = this.props;
+    const { t, hasErrored } = this.props;
 
     return (
       <div className="login_form">
         {this.renderRedirect()}
-        <p className="error_box">{(this.props.hasErrored) ? t('ERROR') : errorMessage}</p>
+        <p className="error_box">{(hasErrored) ? t('ERROR') : errorMessage}</p>
         <form onSubmit={this.loginAccount}>
           <div className="login_block">
             <p className="login_block_text">{ t('USERNAME') }</p>
@@ -74,6 +77,18 @@ class LoginForm extends Component {
     );
   }
 }
+
+LoginForm.propTypes = {
+  t: PropTypes.func.isRequired,
+  fetchLogin: PropTypes.func.isRequired,
+  hasErrored: PropTypes.bool,
+  userConnect: PropTypes.bool,
+};
+
+LoginForm.defaultProps = {
+  hasErrored: false,
+  userConnect: false,
+};
 
 const mapStateToProps = (state) => {
   if (state.user.error) {

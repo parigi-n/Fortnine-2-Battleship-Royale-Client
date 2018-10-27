@@ -2,27 +2,33 @@ import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { translate } from 'react-translate';
+import PropTypes from 'prop-types';
 import { disconnectFetch } from '../Actions/login';
 import './LoginPage/LoginPage.css';
 
 class Header extends Component {
   renderRedirect = () => {
-    if (this.props.disconnect === true) {
+    const { disconnect } = this.props;
+    if (disconnect === true) {
       return <Redirect to="/" />;
     }
+    // Ici il faut retourner quelque chose
   }
 
   render() {
-    const { t } = this.props;
+    const {
+      t, username, token, fetchDisconnect,
+    } = this.props;
     return (
       <div className="App-header">
         {this.renderRedirect()}
         <h1 className="App-title">{t('TITLE')}</h1>
         <div className="user-card">
           {
-          (this.props.username === '')
+          (username === '')
             ? <Link to="/createAccount">{t('CREATE')}</Link>
-            : <span onClick={() => this.props.fetchDisconnect(this.props.token)}>{`${this.props.username} ${t('DISCONNECT')}`}</span>
+            // Problème ici pour eslint
+            : <span onClick={() => fetchDisconnect(token)}>{`${username} ${t('DISCONNECT')}`}</span>
         }
         </div>
       </div>
@@ -40,5 +46,17 @@ const mapDispatchToProps = dispatch => ({
   fetchDisconnect: token => dispatch(disconnectFetch(token)),
 });
 
+Header.propTypes = {
+  username: PropTypes.string.isRequired,
+  disconnect: PropTypes.bool,
+  token: PropTypes.string,
+  t: PropTypes.func.isRequired,
+  fetchDisconnect: PropTypes.func.isRequired,
+};
+
+Header.defaultProps = {
+  disconnect: false,
+  token: '',
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(translate('Header')(Header));
