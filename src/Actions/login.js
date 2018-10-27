@@ -6,7 +6,7 @@ export const loginSuccess = (token, id, email, username) => ({
   username,
 });
 
-export const loginDisconnect = (bool) => ({
+export const loginDisconnect = bool => ({
   type: 'LOGIN_DISCONNECT',
   bool,
 });

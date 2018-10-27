@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { loginFetch } from '../../Actions/login';
+import { translate } from "react-translate";
 import './LoginPage.css';
 
 class LoginForm extends Component {
@@ -44,23 +45,24 @@ class LoginForm extends Component {
 
   render() {
     const { username, password } = this.state;
+    const { t } = this.props;
 
     return (
       <div className="login_form">
       {this.renderRedirect()}
-      <p className="error_box">{this.props.hasErrored}</p>
+      <p className="error_box">{(this.props.hasErrored)? t("ERROR") : ""}</p>
         <form onSubmit={this.loginAccount}>
           <div className="login_block">
-            <p className="login_block_text">Username</p>
+            <p className="login_block_text">{ t("USERNAME") }</p>
             <input name="username" className="login_input" type="text" value={username} onChange={this.handleChange} />
           </div>
           <div className="login_block">
-            <p className="login_block_text">Password</p>
+            <p className="login_block_text">{t("PASSWORD")}</p>
             <input name="password" className="login_input" type="password" value={password} onChange={this.handleChange} />
           </div>
           <input className="login_button" type="submit" value="Login" />
           <p>
-            <Link to="/createAccount">Create your account</Link>
+            <Link to="/createAccount">{t("CREATE")}</Link>
           </p>
         </form>
       </div>
@@ -71,17 +73,17 @@ class LoginForm extends Component {
 const mapStateToProps = (state) => {
   if (state.user.error){
     return {
-      hasErrored: "Error : Wrong Id or Password please retry",
+      hasErrored: true,
       userConnect: false,
     };
   } else if ( state.user.id ){
     return {
-      hasErrored: "",
+      hasErrored: false,
       userConnect: true,
     };
   } else {
     return {
-      hasErrored: "",
+      hasErrored: false,
       userConnect: false,
     };
   }
@@ -93,4 +95,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
+export default connect(mapStateToProps, mapDispatchToProps)(translate("LoginForm")(LoginForm));

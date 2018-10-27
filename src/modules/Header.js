@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { disconnectFetch } from '../Actions/login';
-import { translate } from "react-translate"
+import { translate } from "react-translate";
 import './LoginPage/LoginPage.css';
 
 class Header extends Component {
@@ -17,12 +17,12 @@ class Header extends Component {
     return (
       <div className="App-header">
         {this.renderRedirect()}
-        <h1 className="App-title">{t("Title")}</h1>
+        <h1 className="App-title">{t("TITLE")}</h1>
         <div className="user-card">
         {
           (this.props.username === "")?
-            <Link to="/createAccount">Create Account</Link> :
-            <span onClick={() => this.props.fetchDisconnect(this.props.token)}>{this.props.username}</span>
+            <Link to="/createAccount">{t("CREATE")}</Link> :
+            <span onClick={() => this.props.fetchDisconnect(this.props.token)}>{this.props.username + " " + t("DISCONNECT")}</span>
         }
         </div>
       </div>
