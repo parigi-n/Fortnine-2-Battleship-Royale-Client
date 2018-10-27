@@ -11,6 +11,7 @@ class LoginForm extends Component {
     this.state = {
       username: '',
       password: '',
+      errorMessage: '',
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -27,12 +28,16 @@ class LoginForm extends Component {
 
   loginAccount(event) {
     const { username, password } = this.state;
+    const { t } = this.props;
+
     if (username !== '' && password !== '') {
       const data = new FormData();
       data.append('password', password);
       data.append('username', username);
 
       this.props.fetchLogin(data);
+    } else {
+      this.setState({errorMessage: t('ERROR_FIELD'),});
     }
     event.preventDefault();
   }
@@ -44,13 +49,13 @@ class LoginForm extends Component {
   }
 
   render() {
-    const { username, password } = this.state;
+    const { username, password, errorMessage } = this.state;
     const { t } = this.props;
 
     return (
       <div className="login_form">
       {this.renderRedirect()}
-      <p className="error_box">{(this.props.hasErrored)? t("ERROR") : ""}</p>
+      <p className="error_box">{(this.props.hasErrored)? t("ERROR") : errorMessage}</p>
         <form onSubmit={this.loginAccount}>
           <div className="login_block">
             <p className="login_block_text">{ t("USERNAME") }</p>

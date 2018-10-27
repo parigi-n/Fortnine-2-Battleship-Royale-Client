@@ -10,6 +10,7 @@ export default {
     PASSWORD: 'Password',
     CREATE: 'Create your account',
     ERROR: 'Error : Wrong Id or Password please retry',
+    ERROR_FIELD: 'Error : All fields are mendatory',
   },
   CreateAccount: {
     USERNAME: 'Username',
@@ -20,7 +21,7 @@ export default {
     EMAIL: 'Email',
     ERROR: 'Error : this account already exist',
     ERROR_PM: "Error : passwords doesn't match",
-    ERROR_FIELD: "Error : All fields are mendatory",
+    ERROR_FIELD: 'Error : All fields are mendatory',
   },
 
 };

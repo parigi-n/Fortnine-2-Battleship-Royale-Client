@@ -57,14 +57,14 @@ class CreateAccount extends Component {
 
   render() {
     const {
-      email, username, password, confirmpassword,
+      email, username, password, confirmpassword, errorMessage
     } = this.state;
     const { t } = this.props;
 
     return (
       <div className="login_form">
       {this.renderRedirect()}
-      <p className="error_box">{(this.props.hasErrored)? t("ERROR") : this.state.errorMessage}</p>
+      <p className="error_box">{(this.props.hasErrored)? t("ERROR") : errorMessage}</p>
         <form onSubmit={this.loginAccount}>
           <div className="login_block">
             <p className="login_block_text">{t('EMAIL')}</p>
