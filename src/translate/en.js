@@ -1,5 +1,5 @@
 export default {
-  locale: 'fr',
+  locale: 'en',
   Header: {
     TITLE: 'Fortnine 2 : Shifumi',
     CREATE: 'Create Account',
