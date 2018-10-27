@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { translate } from 'react-translate';
 import { loginFetch } from '../../Actions/login';
-import { translate } from "react-translate";
 import './LoginPage.css';
 
 class LoginForm extends Component {
@@ -37,14 +37,14 @@ class LoginForm extends Component {
 
       this.props.fetchLogin(data);
     } else {
-      this.setState({errorMessage: t('ERROR_FIELD'),});
+      this.setState({ errorMessage: t('ERROR_FIELD') });
     }
     event.preventDefault();
   }
 
   renderRedirect = () => {
     if (this.props.userConnect === true) {
-      return <Redirect to='/lobby' />
+      return <Redirect to="/lobby" />;
     }
   }
 
@@ -54,20 +54,20 @@ class LoginForm extends Component {
 
     return (
       <div className="login_form">
-      {this.renderRedirect()}
-      <p className="error_box">{(this.props.hasErrored)? t("ERROR") : errorMessage}</p>
+        {this.renderRedirect()}
+        <p className="error_box">{(this.props.hasErrored) ? t('ERROR') : errorMessage}</p>
         <form onSubmit={this.loginAccount}>
           <div className="login_block">
-            <p className="login_block_text">{ t("USERNAME") }</p>
+            <p className="login_block_text">{ t('USERNAME') }</p>
             <input name="username" className="login_input" type="text" value={username} onChange={this.handleChange} />
           </div>
           <div className="login_block">
-            <p className="login_block_text">{t("PASSWORD")}</p>
+            <p className="login_block_text">{t('PASSWORD')}</p>
             <input name="password" className="login_input" type="password" value={password} onChange={this.handleChange} />
           </div>
           <input className="login_button" type="submit" value="Login" />
           <p>
-            <Link to="/createAccount">{t("CREATE")}</Link>
+            <Link to="/createAccount">{t('CREATE')}</Link>
           </p>
         </form>
       </div>
@@ -76,28 +76,25 @@ class LoginForm extends Component {
 }
 
 const mapStateToProps = (state) => {
-  if (state.user.error){
+  if (state.user.error) {
     return {
       hasErrored: true,
       userConnect: false,
     };
-  } else if ( state.user.id ){
+  } if (state.user.id) {
     return {
       hasErrored: false,
       userConnect: true,
     };
-  } else {
-    return {
-      hasErrored: false,
-      userConnect: false,
-    };
   }
+  return {
+    hasErrored: false,
+    userConnect: false,
+  };
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        fetchLogin: (data) => dispatch(loginFetch(data)),
-    };
-};
+const mapDispatchToProps = dispatch => ({
+  fetchLogin: data => dispatch(loginFetch(data)),
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(translate("LoginForm")(LoginForm));
+export default connect(mapStateToProps, mapDispatchToProps)(translate('LoginForm')(LoginForm));

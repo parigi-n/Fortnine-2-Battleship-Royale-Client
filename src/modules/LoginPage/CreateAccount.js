@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { translate } from 'react-translate';
 import { createFetch } from '../../Actions/login';
-import { translate } from "react-translate";
 import './LoginPage.css';
 
 class CreateAccount extends Component {
@@ -41,30 +41,30 @@ class CreateAccount extends Component {
 
         this.props.fetchCreate(data);
       } else {
-        this.setState({errorMessage: t('ERROR_PM'),});
+        this.setState({ errorMessage: t('ERROR_PM') });
       }
     } else {
-      this.setState({errorMessage: t('ERROR_FIELD'),});
+      this.setState({ errorMessage: t('ERROR_FIELD') });
     }
     event.preventDefault();
   }
 
   renderRedirect = () => {
     if (this.props.userConnect === true) {
-      return <Redirect to='/lobby' />
+      return <Redirect to="/lobby" />;
     }
   }
 
   render() {
     const {
-      email, username, password, confirmpassword, errorMessage
+      email, username, password, confirmpassword, errorMessage,
     } = this.state;
     const { t } = this.props;
 
     return (
       <div className="login_form">
-      {this.renderRedirect()}
-      <p className="error_box">{(this.props.hasErrored)? t("ERROR") : errorMessage}</p>
+        {this.renderRedirect()}
+        <p className="error_box">{(this.props.hasErrored) ? t('ERROR') : errorMessage}</p>
         <form onSubmit={this.loginAccount}>
           <div className="login_block">
             <p className="login_block_text">{t('EMAIL')}</p>
@@ -93,29 +93,26 @@ class CreateAccount extends Component {
 }
 
 const mapStateToProps = (state) => {
-  if (state.user.error){
+  if (state.user.error) {
     return {
       hasErrored: true,
       userConnect: false,
     };
-  } else if ( state.user.id ){
+  } if (state.user.id) {
     return {
       hasErrored: false,
       userConnect: true,
     };
-  } else {
-    return {
-      hasErrored: false,
-      userConnect: false,
-    };
   }
+  return {
+    hasErrored: false,
+    userConnect: false,
+  };
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        fetchCreate: (data) => dispatch(createFetch(data)),
-    };
-};
+const mapDispatchToProps = dispatch => ({
+  fetchCreate: data => dispatch(createFetch(data)),
+});
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(translate("CreateAccount")(CreateAccount));
+export default connect(mapStateToProps, mapDispatchToProps)(translate('CreateAccount')(CreateAccount));

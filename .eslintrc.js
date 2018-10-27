@@ -4,5 +4,6 @@ module.exports = {
       "jest": true,
       "browser": true,
       "node": true
-    }
+    },
+    "parser": "babel-eslint"
 };
