@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { disconnectFetch } from '../Actions/login';
+import { translate } from "react-translate"
 import './LoginPage/LoginPage.css';
 
 class Header extends Component {
@@ -12,10 +13,11 @@ class Header extends Component {
   }
 
   render(){
+    const { t } = this.props;
     return (
       <div className="App-header">
         {this.renderRedirect()}
-        <h1 className="App-title">Fortnine 2 : Battleship Royale</h1>
+        <h1 className="App-title">{t("Title")}</h1>
         <div className="user-card">
         {
           (this.props.username === "")?
@@ -43,4 +45,4 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(translate("Header")(Header));
