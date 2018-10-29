@@ -1,10 +1,22 @@
-.join_button{
+.button_fortnine{
   border-radius: 2px;
   color: white;
   border: white;
   margin-left: 10px;
   background-color: black;
   padding: 10px 25px;
+}
+
+html, body {
+  height: 100%;
+}
+
+.center {
+  margin-top: 200px;
+}
+
+.Lobby {
+  height: 100vh;
 }
 
 .Room {

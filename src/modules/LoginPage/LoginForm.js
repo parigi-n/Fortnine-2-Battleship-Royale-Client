@@ -14,12 +14,9 @@ class LoginForm extends Component {
       password: '',
       errorMessage: '',
     };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.loginAccount = this.loginAccount.bind(this);
   }
 
-  handleChange(event) {
+  handleChange = (event) => {
     const { name, value } = event.target;
 
     this.setState({
@@ -27,7 +24,7 @@ class LoginForm extends Component {
     });
   }
 
-  loginAccount(event) {
+  loginAccount = (event) => {
     const { username, password } = this.state;
     const { t, fetchLogin } = this.props;
 

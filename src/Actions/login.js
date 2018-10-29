@@ -70,6 +70,5 @@ export const disconnectFetch = token => (dispatch) => {
     }
     throw new Error('Network response was not ok.');
   }).catch(() => {
-    dispatch(loginError(true));
   });
 };

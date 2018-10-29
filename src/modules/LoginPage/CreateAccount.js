@@ -16,19 +16,16 @@ class CreateAccount extends Component {
       confirmpassword: '',
       errorMessage: '',
     };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.loginAccount = this.loginAccount.bind(this);
   }
 
-  handleChange(event) {
+  handleChange = (event) => {
     const { name, value } = event.target;
     this.setState({
       [name]: value,
     });
   }
 
-  loginAccount(event) {
+  loginAccount = (event) => {
     const {
       email, username, password, confirmpassword,
     } = this.state;

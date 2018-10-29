@@ -23,5 +23,13 @@ export default {
     ERROR_PM: "Error : passwords doesn't match",
     ERROR_FIELD: 'Error : All fields are mendatory',
   },
-
+  Lobby: {
+    NOROOM: 'No room available',
+    ADDROOM: 'Add a new room',
+  },
+  CreateRoom: {
+    NAME: 'Name',
+    CREATEROOM: 'Create a new room',
+    ERROR: 'Please choose a name for the room',
+  },
 };

@@ -1,0 +1,22 @@
+.button_fortnine{
+  border-radius: 2px;
+  color: white;
+  border: white;
+  margin-left: 10px;
+  background-color: black;
+  padding: 10px 25px;
+}
+
+.input_fortnine{
+  border-radius: 0px;
+  border: white;
+  border-bottom: solid black 1px;
+}
+
+.block_fortnine{
+  margin: 35px;
+}
+
+.block_text_fortnine{
+  margin-bottom: 10px;
+}
