@@ -53,6 +53,13 @@ class Lobby extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  username: state.user.username,
+  token: state.user.token,
+});
+
+const mapDispatchToProps = () => ({});
+
 Lobby.propTypes = {
   t: PropTypes.func.isRequired,
   token: PropTypes.string,
@@ -62,11 +69,5 @@ Lobby.defaultProps = {
   token: '',
 };
 
-const mapStateToProps = state => ({
-  username: state.user.username,
-  token: state.user.token,
-});
-
-const mapDispatchToProps = () => ({});
 
 export default connect(mapStateToProps, mapDispatchToProps)(translate('Lobby')(Lobby));
