@@ -3,8 +3,8 @@ import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { translate } from 'react-translate';
 import PropTypes from 'prop-types';
-import { disconnectFetch } from '../Actions/login';
-import './LoginPage/LoginPage.css';
+import { disconnectFetch } from '../../Actions/login';
+import './Header.css';
 
 class Header extends Component {
   renderRedirect = () => {
@@ -28,7 +28,7 @@ class Header extends Component {
           (username === '')
             ? <Link to="/createAccount">{t('CREATE')}</Link>
             // Problème ici pour eslint
-            : <span onClick={() => fetchDisconnect(token)}>{`${username} ${t('DISCONNECT')}`}</span>
+            : <span className="link_text" onClick={() => fetchDisconnect(token)}>{`${username} ${t('DISCONNECT')}`}</span>
         }
         </div>
       </div>

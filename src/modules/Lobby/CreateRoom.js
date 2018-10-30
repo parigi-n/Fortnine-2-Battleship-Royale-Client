@@ -4,7 +4,7 @@ import { translate } from 'react-translate';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import io from 'socket.io-client';
-import Header from '../Header';
+import Header from '../Header/Header';
 import './CreateRoom.css';
 
 class CreateRoom extends Component {

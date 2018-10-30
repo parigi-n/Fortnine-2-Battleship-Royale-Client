@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import Header from '../Header';
+import Header from '../Header/Header';
 import LoginForm from './LoginForm';
 import CreateAccount from './CreateAccount';
 import './LoginPage.css';

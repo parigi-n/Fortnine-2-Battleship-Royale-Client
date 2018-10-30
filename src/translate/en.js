@@ -24,6 +24,10 @@ export default {
     ERROR_FIELD: 'Error : All fields are mendatory',
   },
   Lobby: {
+    TABNAMEROOM: 'Name Room',
+    TABOWNER: 'Owner',
+    TABCURCONNECT: 'Currently connected',
+    TABOPTIONS: 'Options',
     NOROOM: 'No room available',
     ADDROOM: 'Add a new room',
   },
