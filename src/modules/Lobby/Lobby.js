@@ -66,7 +66,13 @@ class Lobby extends Component {
             </TableHead>
             <TableBody>
               {datas.map(it => (
-                <Room key={it.id} name={it.name} user={it.roomOwner.username} />
+                <Room
+                  key={it.id}
+                  id={it.id}
+                  roomname={it.name}
+                  user={it.roomOwner.username}
+                  playerList={it.playerList}
+                />
               ))}
             </TableBody>
           </Table>

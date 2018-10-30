@@ -34,6 +34,17 @@ export default {
   CreateRoom: {
     NAME: 'Name',
     CREATEROOM: 'Create a new room',
-    ERROR: 'Please choose a name for the room',
+    SERVER: 'The connection with our server is not established yet please wait',
+    EMPTY: 'Please choose a name for the room',
+    OOPS: 'We got a problem...',
+    OK: 'OK',
+  },
+  Room: {
+    OOPS: 'We got a problem...',
+    JOIN: 'Join',
+    FULL: 'The room you chose is already full',
+    BUSY: 'You are currently inside a room leave it before joining another room',
+    SERVER: 'The connection with our server is not established yet please wait',
+    OK: 'OK',
   },
 };

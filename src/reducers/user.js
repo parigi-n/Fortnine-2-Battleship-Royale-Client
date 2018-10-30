@@ -15,6 +15,10 @@ const user = (state = [], action) => {
       return {
         disconnect: action.bool,
       };
+    case 'JOIN_ROOM':
+      return Object.assign({}, state, {
+        idroom: action.idroom,
+      });
     default:
       return state;
   }

@@ -1,3 +1,8 @@
+export const joinRoom = idroom => ({
+  type: 'JOIN_ROOM',
+  idroom,
+});
+
 const getRoomFetch = (token, callback) => {
   fetch('http://localhost:3000/rooms', {
     method: 'GET',
