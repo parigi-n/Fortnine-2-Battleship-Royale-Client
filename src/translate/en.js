@@ -9,8 +9,7 @@ export default {
     USERNAME: 'Username',
     PASSWORD: 'Password',
     CREATE: 'Create your account',
-    ERROR: 'Error : Wrong Id or Password please retry',
-    ERROR_FIELD: 'Error : All fields are mendatory',
+    ERROR: 'Bad Username or Password please retry',
   },
   CreateAccount: {
     USERNAME: 'Username',
@@ -19,9 +18,8 @@ export default {
     LOGIN: 'You already have an account login',
     C_PASSWORD: 'Confirm password',
     EMAIL: 'Email',
-    ERROR: 'Error : this account already exist',
-    ERROR_PM: "Error : passwords doesn't match",
-    ERROR_FIELD: 'Error : All fields are mendatory',
+    ERROR: 'This account already exist',
+    ERROR_PM: "Passwords doesn't match",
   },
   Lobby: {
     TABNAMEROOM: 'Name Room',

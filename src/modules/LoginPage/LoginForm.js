@@ -12,7 +12,6 @@ class LoginForm extends Component {
     this.state = {
       username: '',
       password: '',
-      errorMessage: '',
     };
   }
 
@@ -26,16 +25,12 @@ class LoginForm extends Component {
 
   loginAccount = (event) => {
     const { username, password } = this.state;
-    const { t, fetchLogin } = this.props;
-
+    const { fetchLogin } = this.props;
     if (username !== '' && password !== '') {
       const data = new FormData();
       data.append('password', password);
       data.append('username', username);
-
       fetchLogin(data);
-    } else {
-      this.setState({ errorMessage: t('ERROR_FIELD') });
     }
     event.preventDefault();
   }
@@ -49,21 +44,23 @@ class LoginForm extends Component {
   }
 
   render() {
-    const { username, password, errorMessage } = this.state;
+    const {
+      username, password,
+    } = this.state;
     const { t, hasErrored } = this.props;
 
     return (
       <div className="login_form">
         {this.renderRedirect()}
-        <p className="error_box">{(hasErrored) ? t('ERROR') : errorMessage}</p>
         <form onSubmit={this.loginAccount}>
           <div className="login_block">
             <p className="login_block_text">{ t('USERNAME') }</p>
-            <input name="username" className="login_input" type="text" value={username} onChange={this.handleChange} />
+            <input name="username" className="login_input" type="text" value={username} onChange={this.handleChange} required />
+            <p style={(!hasErrored) ? { display: 'none' } : { display: 'block' }} className="error_box">{(hasErrored) ? t('ERROR') : ''}</p>
           </div>
           <div className="login_block">
             <p className="login_block_text">{t('PASSWORD')}</p>
-            <input name="password" className="login_input" type="password" value={password} onChange={this.handleChange} />
+            <input name="password" className="login_input" type="password" value={password} onChange={this.handleChange} required />
           </div>
           <input className="login_button" type="submit" value="Login" />
           <p>

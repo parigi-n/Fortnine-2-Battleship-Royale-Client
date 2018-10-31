@@ -70,7 +70,7 @@ class Room extends Component {
         this.setState({ open: true, errorMsg: 'BUSY' });
       }
     } else {
-      this.setState({ open: true, errorMsg: 'SERVER' })
+      this.setState({ open: true, errorMsg: 'SERVER' });
     }
   }
 

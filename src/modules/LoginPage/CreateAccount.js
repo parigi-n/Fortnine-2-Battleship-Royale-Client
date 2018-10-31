@@ -15,6 +15,7 @@ class CreateAccount extends Component {
       password: '',
       confirmpassword: '',
       errorMessage: '',
+      errorMatchPwd: false,
     };
   }
 
@@ -30,6 +31,10 @@ class CreateAccount extends Component {
       email, username, password, confirmpassword,
     } = this.state;
     const { t, fetchCreate } = this.props;
+    this.setState({
+      errorMessage: '',
+      errorMatchPwd: false,
+    });
     if (email !== '' && username !== '' && password !== '' && confirmpassword !== '') {
       if (password === confirmpassword) {
         const data = new FormData();
@@ -38,10 +43,8 @@ class CreateAccount extends Component {
         data.append('email', email);
         fetchCreate(data);
       } else {
-        this.setState({ errorMessage: t('ERROR_PM') });
+        this.setState({ errorMessage: t('ERROR_PM'), errorMatchPwd: true });
       }
-    } else {
-      this.setState({ errorMessage: t('ERROR_FIELD') });
     }
     event.preventDefault();
   }
@@ -57,29 +60,32 @@ class CreateAccount extends Component {
   render() {
     const {
       email, username, password, confirmpassword, errorMessage,
+      errorMatchPwd,
     } = this.state;
     const { t, hasErrored } = this.props;
 
     return (
       <div className="login_form">
         {this.renderRedirect()}
-        <p className="error_box">{(hasErrored) ? t('ERROR') : errorMessage}</p>
         <form onSubmit={this.loginAccount}>
           <div className="login_block">
             <p className="login_block_text">{t('EMAIL')}</p>
-            <input name="email" className="login_input" type="text" value={email} onChange={this.handleChange} />
+            <input name="email" className="login_input" type="text" value={email} onChange={this.handleChange} required />
+            <p style={(!hasErrored) ? { display: 'none' } : { display: 'block' }} className="error_box">{(hasErrored) ? t('ERROR') : ''}</p>
           </div>
           <div className="login_block">
             <p className="login_block_text">{t('USERNAME')}</p>
-            <input name="username" className="login_input" type="text" value={username} onChange={this.handleChange} />
+            <input name="username" className="login_input" type="text" value={username} onChange={this.handleChange} required />
           </div>
           <div className="login_block">
             <p className="login_block_text">{t('PASSWORD')}</p>
-            <input name="password" className="login_input" type="password" value={password} onChange={this.handleChange} />
+            <input name="password" className="login_input" type="password" value={password} onChange={this.handleChange} required />
+            <p style={(!errorMatchPwd) ? { display: 'none' } : { display: 'block' }} className="error_box">{(errorMatchPwd) ? errorMessage : ''}</p>
           </div>
           <div className="login_block">
             <p className="login_block_text">{t('C_PASSWORD')}</p>
-            <input name="confirmpassword" className="login_input" type="password" value={confirmpassword} onChange={this.handleChange} />
+            <input name="confirmpassword" className="login_input" type="password" value={confirmpassword} onChange={this.handleChange} required />
+            <p style={(!errorMatchPwd) ? { display: 'none' } : { display: 'block' }} className="error_box">{(errorMatchPwd) ? errorMessage : ''}</p>
           </div>
           <input className="login_button" type="submit" value="Create" />
           <p>

@@ -20,7 +20,7 @@ class CreateRoom extends Component {
     const tokenCode = token.split(' ')[1];
     this.state = {
       name: '',
-      open: false
+      open: false,
     };
     this.socket = io.connect('http://localhost:4242', {
       query: {
