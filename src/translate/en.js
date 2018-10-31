@@ -14,7 +14,6 @@ export default {
   CreateAccount: {
     USERNAME: 'Username',
     PASSWORD: 'Password',
-    CREATE: 'Create your account',
     LOGIN: 'You already have an account login',
     C_PASSWORD: 'Confirm password',
     EMAIL: 'Email',
@@ -27,22 +26,29 @@ export default {
     TABCURCONNECT: 'Currently connected',
     TABOPTIONS: 'Options',
     NOROOM: 'No room available',
-    ADDROOM: 'Add a new room',
   },
   CreateRoom: {
     NAME: 'Name',
-    CREATEROOM: 'Create a new room',
     SERVER: 'The connection with our server is not established yet please wait',
     EMPTY: 'Please choose a name for the room',
-    OOPS: 'We got a problem...',
-    OK: 'OK',
   },
   Room: {
-    OOPS: 'We got a problem...',
-    JOIN: 'Join',
     FULL: 'The room you chose is already full',
+    BUSY: 'You are currently inside a room leave it before joining another room',
+  },
+  CustomDialog: {
+    OOPS: 'We got a problem...',
+    FULL: 'The room you chose is already full',
+    EMPTY: 'Please choose a name for the room',
     BUSY: 'You are currently inside a room leave it before joining another room',
     SERVER: 'The connection with our server is not established yet please wait',
     OK: 'OK',
+  },
+  CustomButton: {
+    LOGIN: 'Login',
+    ADDROOM: 'Add a new room',
+    JOIN: 'Join',
+    CREATE: 'Create your account',
+    CREATEROOM: 'Create a new room',
   },
 };

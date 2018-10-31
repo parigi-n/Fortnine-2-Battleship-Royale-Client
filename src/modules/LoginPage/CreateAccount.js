@@ -3,6 +3,11 @@ import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { translate } from 'react-translate';
 import PropTypes from 'prop-types';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import CustomButton from '../CustomMaterialUIComponent/CustomButton';
 import { createFetch } from '../../Actions/login';
 import './LoginPage.css';
 
@@ -69,25 +74,33 @@ class CreateAccount extends Component {
         {this.renderRedirect()}
         <form onSubmit={this.loginAccount}>
           <div className="login_block">
-            <p className="login_block_text">{t('EMAIL')}</p>
-            <input name="email" className="login_input" type="text" value={email} onChange={this.handleChange} required />
-            <p style={(!hasErrored) ? { display: 'none' } : { display: 'block' }} className="error_box">{(hasErrored) ? t('ERROR') : ''}</p>
+            <FormControl error={!(!hasErrored)}>
+              <InputLabel htmlFor={(!hasErrored) ? 'component-simple' : 'component-error-text'} style={{ color: 'black' }}>{ t('EMAIL') }</InputLabel>
+              <Input name="email" id={(!hasErrored) ? 'component-simple' : 'component-error-text'} value={email} onChange={this.handleChange} type="email" required />
+              <FormHelperText style={(!hasErrored) ? { display: 'none' } : { display: 'block' }} id="component-error-text">{(hasErrored) ? t('ERROR') : ''}</FormHelperText>
+            </FormControl>
           </div>
           <div className="login_block">
-            <p className="login_block_text">{t('USERNAME')}</p>
-            <input name="username" className="login_input" type="text" value={username} onChange={this.handleChange} required />
+            <FormControl>
+              <InputLabel htmlFor="component-simple" style={{ color: 'black' }}>{ t('USERNAME') }</InputLabel>
+              <Input id="component-simple" name="username" value={username} onChange={this.handleChange} required />
+            </FormControl>
           </div>
           <div className="login_block">
-            <p className="login_block_text">{t('PASSWORD')}</p>
-            <input name="password" className="login_input" type="password" value={password} onChange={this.handleChange} required />
-            <p style={(!errorMatchPwd) ? { display: 'none' } : { display: 'block' }} className="error_box">{(errorMatchPwd) ? errorMessage : ''}</p>
+            <FormControl error={!(!errorMatchPwd)}>
+              <InputLabel htmlFor="component-simple" style={{ color: 'black' }}>{ t('PASSWORD') }</InputLabel>
+              <Input id="component-simple" name="password" value={password} onChange={this.handleChange} type="password" required />
+              <FormHelperText style={(!errorMatchPwd) ? { display: 'none' } : { display: 'block' }} id="component-error-text">{(errorMatchPwd) ? errorMessage : ''}</FormHelperText>
+            </FormControl>
           </div>
           <div className="login_block">
-            <p className="login_block_text">{t('C_PASSWORD')}</p>
-            <input name="confirmpassword" className="login_input" type="password" value={confirmpassword} onChange={this.handleChange} required />
-            <p style={(!errorMatchPwd) ? { display: 'none' } : { display: 'block' }} className="error_box">{(errorMatchPwd) ? errorMessage : ''}</p>
+            <FormControl error={!(!errorMatchPwd)}>
+              <InputLabel htmlFor="component-simple" style={{ color: 'black' }}>{ t('C_PASSWORD') }</InputLabel>
+              <Input name="confirmpassword" value={confirmpassword} onChange={this.handleChange} type="password" required />
+              <FormHelperText style={(!errorMatchPwd) ? { display: 'none' } : { display: 'block' }} id="component-error-text">{(errorMatchPwd) ? errorMessage : ''}</FormHelperText>
+            </FormControl>
           </div>
-          <input className="login_button" type="submit" value="Create" />
+          <CustomButton type="submit" marginTop={20} text="CREATE" />
           <p>
             <Link to="/">{t('LOGIN')}</Link>
           </p>
@@ -110,7 +123,7 @@ CreateAccount.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-  if (state.user.error) {
+  if (state.user.error_create) {
     return {
       hasErrored: true,
       userConnect: false,

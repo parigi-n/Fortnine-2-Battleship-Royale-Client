@@ -12,6 +12,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import grey from '@material-ui/core/colors/grey';
+import CustomButton from '../CustomMaterialUIComponent/CustomButton';
 import getRoomFetch from '../../Actions/room';
 import Room from './Room';
 import Header from '../Header/Header';
@@ -77,7 +78,7 @@ class Lobby extends Component {
             </TableBody>
           </Table>
         </Paper>
-        <Link to="/createRoom"><button className="button_fortnine add_new_room" type="button">{ t('ADDROOM') }</button></Link>
+        <Link style={{ textDecoration: 'none' }} to="/createRoom"><CustomButton marginTop={20} text="ADDROOM" /></Link>
       </div>
     );
   }

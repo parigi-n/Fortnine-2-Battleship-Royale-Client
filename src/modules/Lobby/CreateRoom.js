@@ -4,12 +4,11 @@ import { translate } from 'react-translate';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import io from 'socket.io-client';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import CustomButton from '../CustomMaterialUIComponent/CustomButton';
+import CustomDialog from '../CustomMaterialUIComponent/CustomDialog';
 import Header from '../Header/Header';
 import './CreateRoom.css';
 
@@ -47,8 +46,21 @@ class CreateRoom extends Component {
     this.setState({ open: false });
   }
 
+  handleClose = () => {
+    this.setState({ open: false });
+  }
+
+  renderDialog = () => {
+    const { errorMsg, open } = this.state;
+    if (open) {
+      return <CustomDialog errMsg={errorMsg} open handleClose={this.handleClose} />;
+    }
+    return '';
+  }
+
   createRoom = (event) => {
     const { name, connected } = this.state;
+    this.setState({ open: false });
     if (name === '') {
       this.setState({ open: true, errorMsg: 'EMPTY' });
       event.preventDefault();
@@ -62,7 +74,6 @@ class CreateRoom extends Component {
       });
     } else {
       this.setState({ open: true, errorMsg: 'SERVER' });
-      console.log('Connection is not ready yet');
     }
     event.preventDefault();
   }
@@ -77,36 +88,21 @@ class CreateRoom extends Component {
 
   render() {
     const { t } = this.props;
-    const { name, errorMsg, open } = this.state;
+    const { name } = this.state;
     return (
       <div className="CreateRoom" align="center">
         <Header />
         <form onSubmit={this.createRoom}>
           {this.redirectPageLobby()}
           <div className="block_fortnine">
-            <p className="block_text_fortnine">{t('NAME')}</p>
-            <input name="name" className="input_fortnine" type="text" value={name} onChange={this.handleChange} />
+            <FormControl>
+              <InputLabel htmlFor="component-simple" style={{ color: 'black' }}>{ t('NAME') }</InputLabel>
+              <Input name="name" value={name} onChange={this.handleChange} required />
+            </FormControl>
           </div>
-          <input className="button_fortnine" type="submit" value={t('CREATEROOM')} />
+          <CustomButton type="submit" marginTop={20} text="CREATEROOM" />
         </form>
-        <Dialog
-          open={open}
-          onClose={this.handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">{t('OOPS')}</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              {t(errorMsg)}
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
-              {t('OK')}
-            </Button>
-          </DialogActions>
-        </Dialog>
+        {this.renderDialog()}
       </div>
     );
   }

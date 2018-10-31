@@ -9,7 +9,11 @@ const user = (state = [], action) => {
       };
     case 'LOGIN_ERROR':
       return {
-        error: action.error,
+        error_login: action.error,
+      };
+    case 'CREATE_ACCOUNT_ERROR':
+      return {
+        error_create: action.error,
       };
     case 'LOGIN_DISCONNECT':
       return {

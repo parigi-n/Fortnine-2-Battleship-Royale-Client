@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { translate } from 'react-translate';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
 import PropTypes from 'prop-types';
 import { disconnectFetch } from '../../Actions/login';
 import './Header.css';
@@ -29,18 +31,20 @@ class Header extends Component {
       t, username, token, fetchDisconnect,
     } = this.props;
     return (
-      <div className="App-header">
-        {this.renderRedirect()}
-        <h1 className="App-title">{t('TITLE')}</h1>
-        <div className="user-card">
-          {
+      <AppBar position="static">
+        <Toolbar style={{ backgroundColor: 'black' }}>
+          {this.renderRedirect()}
+          <h1 className="App-title">{t('TITLE')}</h1>
+          <div className="user-card">
+            {
           (username === '')
             ? <Link to="/createAccount">{t('CREATE')}</Link>
             // Problème ici pour eslint
             : <span onKeyPress={this.handleKeyPress} role="button" tabIndex={0} className="link_text" onClick={() => fetchDisconnect(token)}>{`${username} ${t('DISCONNECT')}`}</span>
         }
-        </div>
-      </div>
+          </div>
+        </Toolbar>
+      </AppBar>
     );
   }
 }

@@ -16,6 +16,11 @@ export const loginError = error => ({
   error,
 });
 
+export const createAccountError = error => ({
+  type: 'CREATE_ACCOUNT_ERROR',
+  error,
+});
+
 export const loginLoading = loading => ({
   type: 'LOGIN_LOADING',
   loading,
@@ -54,7 +59,7 @@ export const createFetch = data => (dispatch) => {
   }).then((json) => {
     dispatch(loginSuccess(token, json.id, json.email, json.username));
   }).catch(() => {
-    dispatch(loginError(true));
+    dispatch(createAccountError(true));
   });
 };
 

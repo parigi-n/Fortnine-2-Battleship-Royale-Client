@@ -8,6 +8,10 @@
   cursor: pointer;
 }
 
+.marginTop {
+  margin-top: 20px;
+}
+
 .add_new_room{
   margin-top: 20px;
 }
