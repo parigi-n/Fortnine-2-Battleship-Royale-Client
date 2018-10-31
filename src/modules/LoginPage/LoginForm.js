@@ -40,7 +40,7 @@ class LoginForm extends Component {
     if (userConnect === true) {
       return <Redirect to="/lobby" />;
     }
-    // Il faut faire un return ici
+    return '';
   }
 
   render() {

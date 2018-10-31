@@ -12,7 +12,16 @@ class Header extends Component {
     if (disconnect === true) {
       return <Redirect to="/" />;
     }
-    // Ici il faut retourner quelque chose
+    return '';
+  }
+
+  handleKeyPress = (event) => {
+    const {
+      token, fetchDisconnect,
+    } = this.props;
+    if (event.key === 'Enter') {
+      fetchDisconnect(token);
+    }
   }
 
   render() {
@@ -28,7 +37,7 @@ class Header extends Component {
           (username === '')
             ? <Link to="/createAccount">{t('CREATE')}</Link>
             // Problème ici pour eslint
-            : <span className="link_text" onClick={() => fetchDisconnect(token)}>{`${username} ${t('DISCONNECT')}`}</span>
+            : <span onKeyPress={this.handleKeyPress} role="button" tabIndex={0} className="link_text" onClick={() => fetchDisconnect(token)}>{`${username} ${t('DISCONNECT')}`}</span>
         }
         </div>
       </div>

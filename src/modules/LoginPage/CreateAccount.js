@@ -54,7 +54,7 @@ class CreateAccount extends Component {
     if (userConnect === true) {
       return <Redirect to="/lobby" />;
     }
-    // Il faut retourner quelque chose ici
+    return '';
   }
 
   render() {

@@ -72,6 +72,7 @@ class CreateRoom extends Component {
     if (created) {
       return <Redirect to="/lobby" />;
     }
+    return '';
   }
 
   render() {
