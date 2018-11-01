@@ -1,4 +1,4 @@
 {
-  "presets": ["flow", "react"],
-  "plugin": ["emotion"]
+  "presets": ["flow", "react", "env"],
+  "plugins": ["emotion"]
 }
