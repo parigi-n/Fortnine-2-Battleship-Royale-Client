@@ -1,0 +1,22 @@
+.GameRoom{
+  text-align: center;
+}
+
+.btn_container{
+  margin-top: 35px;
+}
+
+.btn_container button{
+  margin: 10px;
+  width: 100px;
+}
+
+.LogDisplay{
+  margin-top: 35px;
+}
+
+.LogDisplay span{
+  border: 1px solid;
+  padding: 10px 20px;
+  border-radius: 4px;
+}

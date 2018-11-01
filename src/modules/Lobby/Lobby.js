@@ -15,7 +15,6 @@ import grey from '@material-ui/core/colors/grey';
 import CustomButton from '../CustomMaterialUIComponent/CustomButton';
 import getRoomFetch from '../../Actions/room';
 import Room from './Room';
-import Header from '../Header/Header';
 import './Lobby.css';
 
 const CustomTableCell = withStyles(theme => ({
@@ -47,14 +46,12 @@ class Lobby extends Component {
     if (!datas) {
       return (
         <div className="Lobby" align="center">
-          <Header />
           <CircularProgress className="center" size={100} style={{ color: grey[900] }} />
         </div>
       );
     }
     return (
       <div className="Lobby" align="center">
-        <Header />
         <Paper>
           <Table>
             <TableHead>
