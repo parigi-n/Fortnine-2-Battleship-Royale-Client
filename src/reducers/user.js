@@ -23,6 +23,17 @@ const user = (state = [], action) => {
       return Object.assign({}, state, {
         idroom: action.idroom,
       });
+    case 'LEAVE_ROOM':
+      return {
+        token: state.token,
+        id: state.id,
+        email: state.email,
+        username: state.username,
+      };
+    case 'ADD_SOCKET':
+      return Object.assign({}, state, {
+        socket: action.socket,
+      });
     default:
       return state;
   }

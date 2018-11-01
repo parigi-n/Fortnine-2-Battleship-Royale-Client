@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { translate } from 'react-translate';
+import io from 'socket.io-client';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import PropTypes from 'prop-types';
@@ -17,6 +18,18 @@ class Header extends Component {
     return '';
   }
 
+  disconnect = () => {
+    const {
+      socket, leaveRoomDispatch, idroom, token, fetchDisconnect,
+    } = this.props;
+    if (idroom !== '') {
+      socket.emit('exitRoom', {}, () => {
+        leaveRoomDispatch();
+      });
+    }
+    fetchDisconnect(token);
+  }
+
   handleKeyPress = (event) => {
     const {
       token, fetchDisconnect,
@@ -28,7 +41,7 @@ class Header extends Component {
 
   render() {
     const {
-      t, username, token, fetchDisconnect,
+      t, username,
     } = this.props;
     return (
       <AppBar position="static">
@@ -39,8 +52,7 @@ class Header extends Component {
             {
           (username === '')
             ? <Link to="/createAccount">{t('CREATE')}</Link>
-            // Problème ici pour eslint
-            : <span onKeyPress={this.handleKeyPress} role="button" tabIndex={0} className="link_text" onClick={() => fetchDisconnect(token)}>{`${username} ${t('DISCONNECT')}`}</span>
+            : <span onKeyPress={this.handleKeyPress} role="button" tabIndex={0} className="link_text" onClick={this.disconnect}>{`${username} ${t('DISCONNECT')}`}</span>
         }
           </div>
         </Toolbar>
@@ -50,26 +62,34 @@ class Header extends Component {
 }
 
 const mapStateToProps = state => ({
+  idroom: state.user.idroom,
+  socket: state.user.socket,
   username: ((state.user.username) ? state.user.username : ''),
   token: state.user.token,
   disconnect: state.user.disconnect,
 });
 
 const mapDispatchToProps = dispatch => ({
+  leaveRoomDispatch: () => dispatch({ type: 'LEAVE_ROOM' }),
   fetchDisconnect: token => dispatch(disconnectFetch(token)),
 });
 
 Header.propTypes = {
+  idroom: PropTypes.string,
+  fetchDisconnect: PropTypes.func.isRequired,
+  socket: PropTypes.instanceOf(io.Socket),
   username: PropTypes.string.isRequired,
   disconnect: PropTypes.bool,
   token: PropTypes.string,
   t: PropTypes.func.isRequired,
-  fetchDisconnect: PropTypes.func.isRequired,
+  leaveRoomDispatch: PropTypes.func.isRequired,
 };
 
 Header.defaultProps = {
+  socket: null,
   disconnect: false,
   token: '',
+  idroom: '',
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(translate('Header')(Header));

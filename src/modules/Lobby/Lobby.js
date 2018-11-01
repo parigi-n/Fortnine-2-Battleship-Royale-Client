@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { translate } from 'react-translate';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import io from 'socket.io-client';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -14,6 +15,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import grey from '@material-ui/core/colors/grey';
 import CustomButton from '../CustomMaterialUIComponent/CustomButton';
 import getRoomFetch from '../../Actions/room';
+import addSocket from '../../Actions/socket';
 import Room from './Room';
 import './Lobby.css';
 
@@ -31,6 +33,22 @@ class Lobby extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    const { token, addSocketDispatch, socket } = this.props;
+    const tokenCode = token.split(' ')[1];
+    if (!socket) {
+      const socketTmp = io.connect('http://localhost:4242', {
+        query: {
+          token: tokenCode,
+        },
+      });
+      socketTmp.on('error', () => {
+      });
+      socketTmp.on('connect_failed', () => {
+      });
+      socketTmp.on('ready', () => {
+        addSocketDispatch(socketTmp);
+      });
+    }
   }
 
   componentDidMount() {
@@ -38,6 +56,13 @@ class Lobby extends Component {
     getRoomFetch(token, (arrayRooms) => {
       this.setState({ datas: arrayRooms });
     });
+  }
+
+  redirection = () => {
+    const { idroom, token } = this.props;
+    if (token === '') return <Redirect to="/" />;
+    if (idroom !== '') return <Redirect to="/gameRoom" />;
+    return '';
   }
 
   render() {
@@ -52,6 +77,7 @@ class Lobby extends Component {
     }
     return (
       <div className="Lobby" align="center">
+        { this.redirection() }
         <Paper>
           <Table>
             <TableHead>
@@ -82,18 +108,27 @@ class Lobby extends Component {
 }
 
 const mapStateToProps = state => ({
+  socket: state.user.socket,
+  idroom: state.user.idroom,
   username: state.user.username,
   token: state.user.token,
 });
 
-const mapDispatchToProps = () => ({});
+const mapDispatchToProps = dispatch => ({
+  addSocketDispatch: socket => dispatch(addSocket(socket)),
+});
 
 Lobby.propTypes = {
+  socket: PropTypes.instanceOf(io.Socket),
+  idroom: PropTypes.string,
   t: PropTypes.func.isRequired,
   token: PropTypes.string,
+  addSocketDispatch: PropTypes.func.isRequired,
 };
 
 Lobby.defaultProps = {
+  socket: null,
+  idroom: '',
   token: '',
 };
 

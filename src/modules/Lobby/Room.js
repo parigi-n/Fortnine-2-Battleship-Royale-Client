@@ -3,8 +3,8 @@ import { translate } from 'react-translate';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import { withStyles } from '@material-ui/core/styles';
-import io from 'socket.io-client';
 import PropTypes from 'prop-types';
+import io from 'socket.io-client';
 import { connect } from 'react-redux';
 import CustomDialog from '../CustomMaterialUIComponent/CustomDialog';
 import CustomButton from '../CustomMaterialUIComponent/CustomButton';
@@ -23,21 +23,7 @@ const CustomTableCell = withStyles(theme => ({
 class Room extends Component {
   constructor(props) {
     super(props);
-    const { token } = this.props;
-    const tokenCode = token.split(' ')[1];
     this.state = { open: false, errorMsg: '' };
-    this.socket = io.connect('http://localhost:4242', {
-      query: {
-        token: tokenCode,
-      },
-    });
-    this.socket.on('error', () => {
-    });
-    this.socket.on('connect_failed', () => {
-    });
-    this.socket.on('ready', () => {
-      this.setState({ connected: true });
-    });
   }
 
   handleClose = () => {
@@ -46,25 +32,19 @@ class Room extends Component {
 
   handleJoinRoom = () => {
     const {
-      id, joinRoomDispatch, idroom,
+      id, joinRoomDispatch, idroom, socket,
     } = this.props;
-    const { connected } = this.state;
     this.setState({ open: false });
-    if (connected) {
-      if (!idroom) {
-        this.socket.emit('joinRoom', {
-          id,
-        }, (result) => {
-          if (result.success) {
-            joinRoomDispatch(id);
-          }
-          this.setState({ open: true, errorMsg: 'FULL' });
-        });
-      } else {
-        this.setState({ open: true, errorMsg: 'BUSY' });
-      }
+    if (!idroom) {
+      socket.emit('joinRoom', {
+        id,
+      }, (result) => {
+        if (result.success) {
+          joinRoomDispatch(id);
+        } else this.setState({ open: true, errorMsg: 'FULL' });
+      });
     } else {
-      this.setState({ open: true, errorMsg: 'SERVER' });
+      this.setState({ open: true, errorMsg: 'BUSY' });
     }
   }
 
@@ -73,7 +53,7 @@ class Room extends Component {
     if (open) {
       return <CustomDialog errMsg={errorMsg} open={open} handleClose={this.handleClose} />;
     }
-    return '';
+    return <CustomDialog errMsg={errorMsg} open={false} handleClose={this.handleClose} />;
   }
 
   render() {
@@ -93,16 +73,17 @@ class Room extends Component {
 }
 
 Room.propTypes = {
+  socket: PropTypes.instanceOf(io.Socket),
   idroom: PropTypes.string,
   joinRoomDispatch: PropTypes.func.isRequired,
   roomname: PropTypes.string.isRequired,
   user: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
-  token: PropTypes.string,
   playerList: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 const mapStateToProps = state => ({
+  socket: state.user.socket,
   idroom: state.user.idroom,
   token: state.user.token,
 });
@@ -112,7 +93,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 Room.defaultProps = {
-  token: '',
+  socket: null,
   idroom: '',
 };
 

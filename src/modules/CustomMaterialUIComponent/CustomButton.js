@@ -8,9 +8,7 @@ const CustomButton = (props) => {
     t, text, click, marginTop, type,
   } = props;
   return (
-    <Button variant="contained" type={type} style={{ backgroundColor: 'black', marginTop: `${marginTop}px` }} onClick={click} color="primary">
-      {t(text)}
-    </Button>
+    <Button variant="contained" type={type} style={{ backgroundColor: 'black', marginTop: `${marginTop}px` }} onClick={click} color="primary">{t(text)}</Button>
   );
 };
 

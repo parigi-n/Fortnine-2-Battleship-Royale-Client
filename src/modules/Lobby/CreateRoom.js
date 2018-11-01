@@ -9,30 +9,16 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import CustomButton from '../CustomMaterialUIComponent/CustomButton';
 import CustomDialog from '../CustomMaterialUIComponent/CustomDialog';
-import Header from '../Header/Header';
+import { joinRoom } from '../../Actions/room';
 import './CreateRoom.css';
 
 class CreateRoom extends Component {
   constructor(props) {
     super(props);
-    const { token } = this.props;
-    const tokenCode = token.split(' ')[1];
     this.state = {
       name: '',
       open: false,
     };
-    this.socket = io.connect('http://localhost:4242', {
-      query: {
-        token: tokenCode,
-      },
-    });
-    this.socket.on('error', () => {
-    });
-    this.socket.on('connect_failed', () => {
-    });
-    this.socket.on('ready', () => {
-      this.setState({ connected: true });
-    });
   }
 
   handleChange = (event) => {
@@ -46,8 +32,11 @@ class CreateRoom extends Component {
     this.setState({ open: false });
   }
 
-  handleClose = () => {
-    this.setState({ open: false });
+  redirection = () => {
+    const { idroom, token } = this.props;
+    if (token === '') return <Redirect to="/" />;
+    if (idroom !== '') return <Redirect to="/gameRoom" />;
+    return '';
   }
 
   renderDialog = () => {
@@ -59,22 +48,23 @@ class CreateRoom extends Component {
   }
 
   createRoom = (event) => {
-    const { name, connected } = this.state;
+    const { joinRoomDispatch, socket } = this.props;
+    const { name } = this.state;
     this.setState({ open: false });
     if (name === '') {
       this.setState({ open: true, errorMsg: 'EMPTY' });
       event.preventDefault();
       return;
     }
-    if (connected) {
-      this.socket.emit('createRoom', {
-        name,
-      }, () => {
+    socket.emit('createRoom', {
+      name,
+    }, (data) => {
+      const { id } = data.room;
+      if (data.success) {
+        joinRoomDispatch(id);
         this.setState({ created: true });
-      });
-    } else {
-      this.setState({ open: true, errorMsg: 'SERVER' });
-    }
+      }
+    });
     event.preventDefault();
   }
 
@@ -91,7 +81,7 @@ class CreateRoom extends Component {
     const { name } = this.state;
     return (
       <div className="CreateRoom" align="center">
-        <Header />
+        {this.redirection()}
         <form onSubmit={this.createRoom}>
           {this.redirectPageLobby()}
           <div className="block_fortnine">
@@ -109,17 +99,26 @@ class CreateRoom extends Component {
 }
 
 const mapStateToProps = state => ({
+  socket: state.user.socket,
+  idroom: state.user.idroom,
   token: state.user.token,
 });
 
-const mapDispatchToProps = () => ({});
+const mapDispatchToProps = dispatch => ({
+  joinRoomDispatch: idroom => dispatch(joinRoom(idroom)),
+});
 
 CreateRoom.propTypes = {
+  socket: PropTypes.instanceOf(io.Socket),
+  idroom: PropTypes.string,
   token: PropTypes.string,
+  joinRoomDispatch: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,
 };
 
 CreateRoom.defaultProps = {
+  socket: null,
+  idroom: '',
   token: '',
 };
 
