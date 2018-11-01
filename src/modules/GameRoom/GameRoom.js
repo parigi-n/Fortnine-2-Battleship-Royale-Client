@@ -32,6 +32,8 @@ class GameRoom extends Component {
             />
           </p>
         </div>
+
+        <CustomButton marginTop={20} text="DISCONNECTROOM" />
       </div>
     );
   }

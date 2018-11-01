@@ -53,6 +53,7 @@ export default {
     ROCK: 'Rock',
     PAPER: 'Paper',
     SCISSORS: 'Scissors',
+    DISCONNECTROOM: 'Quit game room',
   },
   GameRoom: {
     CHOOSE: 'Choose your move',
