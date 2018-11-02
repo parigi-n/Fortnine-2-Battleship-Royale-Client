@@ -54,12 +54,19 @@ class GameRoom extends Component {
   }
 
   handleStart = (data) => {
-    this.setState({ duration: (data.duration - 2), phase: 1 });
+    this.setState({
+      duration: (data.duration - 2),
+      phase: 1,
+      victory: '',
+      winner: '',
+      myScore: 0,
+      opponentScore: 0,
+    });
   }
 
   handlePlay = (newPhase) => {
     const { phase } = this.state;
-    if (newPhase > phase ){
+    if (newPhase > phase) {
       this.setState({ phase: newPhase });
     }
   }
