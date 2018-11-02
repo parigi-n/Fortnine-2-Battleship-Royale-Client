@@ -56,7 +56,7 @@ export default {
     DISCONNECTROOM: 'Quit game room',
   },
   GameRoom: {
-    CHOOSE: 'Choose your move',
+    CHOOSE: 'Choose your move tou have: ',
     WAITING: 'Waiting for an opponent',
     OPPONENTMOVE: 'Your oppenent played: ',
     OPPPONENTPLAYED: 'Your is waiting for you',
