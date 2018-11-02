@@ -4,7 +4,6 @@ import './index.css';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
 import { TranslatorProvider } from 'react-translate';
 import { persistStore, persistReducer } from 'redux-persist';
 import { PersistGate } from 'redux-persist/lib/integration/react';
@@ -22,7 +21,7 @@ const persistConfig = {
   stateReconciler: autoMergeLevel2,
 };
 const pReducer = persistReducer(persistConfig, rootReducer);
-export const store = createStore(pReducer, composeWithDevTools(applyMiddleware(thunk)));
+export const store = createStore(pReducer, applyMiddleware(thunk));
 export const persistor = persistStore(store);
 ReactDOM.render(
   <Provider store={store}>

@@ -15,7 +15,7 @@
   margin-top: 35px;
 }
 
-.LogDisplay span{
+.LogDisplay .border{
   border: 1px solid;
   padding: 10px 20px;
   border-radius: 4px;

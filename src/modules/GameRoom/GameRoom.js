@@ -15,18 +15,20 @@ class GameRoom extends Component {
     this.state = {
       phase: 0,
       duration: 0,
+      victory: '',
+      winner: '',
+      myScore: 0,
+      opponentScore: 0,
     };
   }
 
   componentDidMount() {
     const { socket } = this.props;
-    socket.on('roundStart', (data) => (this.handleSocket(data, 1)));
-    socket.on('roundEnd', (data) => {
-      console.log(data);
-    });
-    socket.on('gameEnd', (data) => {
-      console.log(data);
-    });
+    if (socket) {
+      socket.on('roundStart', data => (this.handleStart(data)));
+      socket.on('roundEnd', data => (this.handleEndRound(data)));
+      socket.on('gameEnd', data => (this.handleEndGame(data)));
+    }
   }
 
   redirectLobby = () => {
@@ -38,8 +40,7 @@ class GameRoom extends Component {
 
   handleClick = () => {
     const { leaveRoomDispatch, socket } = this.props;
-    socket.emit('exitRoom', {}, (data) => {
-      console.log(data);
+    socket.emit('exitRoom', {}, () => {
       leaveRoomDispatch();
     });
   }
@@ -47,34 +48,73 @@ class GameRoom extends Component {
   playSignClick = (sign) => {
     const { socket } = this.props;
     socket.emit('playSign', {
-      sign: sign,
-    });
+      sign,
+    },
+    () => (this.handlePlay(2)));
   }
 
-  handleSocket = (data, phase) => {
-    this.setState({ duration: (data.duration - 2), phase });
+  handleStart = (data) => {
+    this.setState({ duration: (data.duration - 2), phase: 1 });
+  }
+
+  handlePlay = (newPhase) => {
+    const { phase } = this.state;
+    if (newPhase > phase ){
+      this.setState({ phase: newPhase });
+    }
+  }
+
+  handleEndRound = (data) => {
+    const { id } = this.props;
+    const { myScore, opponentScore } = this.state;
+
+    let newScore;
+    if (!data.winner) {
+      this.setState({ phase: 3, victory: 'tie' });
+    } else if (data.winner.userId === id) {
+      newScore = myScore + 1;
+      this.setState({ myScore: newScore, phase: 3, victory: 'true' });
+    } else {
+      newScore = opponentScore + 1;
+      this.setState({ opponentScore: newScore, phase: 3, victory: 'false' });
+    }
+  }
+
+  handleEndGame = (data) => {
+    const { id } = this.props;
+
+    if (!data.winner) {
+      this.setState({ phase: 4, winner: 'tie' });
+    } else if (data.winner.userId === id) {
+      this.setState({ phase: 4, winner: 'true' });
+    } else {
+      this.setState({ phase: 4, winner: 'false' });
+    }
   }
 
   render() {
     const { t } = this.props;
-    const { phase, duration } = this.state;
+    const {
+      phase, duration, victory, myScore, opponentScore, winner,
+    } = this.state;
     return (
       <div className="GameRoom">
         { this.redirectLobby() }
         <p className="LogDisplay">
-          {(phase === 0) ? <span>{t('WAITING')}</span> : '' }
-          {(phase === 1) ? <span>{t('WAITOPPONENT')}</span> : '' }
+          {(phase === 0) ? <span className="border">{t('WAITING')}</span> : '' }
+          {(phase === 1) ? (
+            <span className="border">
+              {t('CHOOSE')}
+              <Countdown date={Date.now() + (duration * 1000)} />
+            </span>
+          ) : '' }
+          {(phase === 2) ? <span className="border">{t('WAITOPPONENT')}</span> : '' }
         </p>
 
         {(phase === 1)
           ? (
             <div className="btn_container">
               <div>
-                <p>
-                  {t('CHOOSE')}
-                  {' '}
-                  <Countdown date={Date.now() + (duration * 1000)} />
-                </p>
                 <CustomButton marginTop={20} text="ROCK" click={() => { this.playSignClick('rock'); }} />
                 <CustomButton marginTop={20} text="PAPER" click={() => { this.playSignClick('paper'); }} />
                 <CustomButton marginTop={20} text="SCISSORS" click={() => { this.playSignClick('scissors'); }} />
@@ -94,6 +134,36 @@ class GameRoom extends Component {
             </div>
           )
           : ''}
+        <div>
+          {(phase === 4)
+            ? (
+              <p>
+                {(winner === 'true') ? t('VICTORY') : '' }
+                {(winner === 'false') ? t('DEFEAT') : '' }
+                {(winner === 'tie') ? t('DRAW') : '' }
+              </p>
+            )
+            : (
+              <p>
+                {(victory === 'true') ? t('WON') : '' }
+                {(victory === 'false') ? t('LOST') : '' }
+                {(victory === 'tie') ? t('TIE') : '' }
+              </p>
+            )
+        }
+          {(victory !== '')
+            ? (
+              <p>
+                {(phase === 4) ? t('FINALSCORE') : t('SCORE')}
+                {' '}
+                {myScore}
+                {' '}
+                {opponentScore}
+              </p>
+            )
+            : ''
+            }
+        </div>
         <CustomButton marginTop={20} click={this.handleClick} text="DISCONNECTROOM" />
       </div>
     );
@@ -104,6 +174,7 @@ const mapStateToProps = state => ({
   socket: state.user.socket,
   idroom: state.user.idroom,
   username: state.user.username,
+  id: state.user.id,
   token: state.user.token,
 });
 
@@ -116,6 +187,7 @@ GameRoom.propTypes = {
   leaveRoomDispatch: PropTypes.func.isRequired,
   idroom: PropTypes.string,
   token: PropTypes.string,
+  id: PropTypes.number.isRequired,
   t: PropTypes.func.isRequired,
 };
 
