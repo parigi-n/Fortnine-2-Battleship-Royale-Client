@@ -15,8 +15,8 @@ class LoginForm extends Component {
   constructor(props) {
     super(props);
     const { username } = this.props;
-      this.state = {
-      username: username,
+    this.state = {
+      username,
       password: '',
     };
   }

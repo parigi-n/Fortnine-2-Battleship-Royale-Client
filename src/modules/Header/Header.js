@@ -41,7 +41,7 @@ class Header extends Component {
 
   render() {
     const {
-      t, username, token
+      t, username, token,
     } = this.props;
     return (
       <AppBar position="static">
