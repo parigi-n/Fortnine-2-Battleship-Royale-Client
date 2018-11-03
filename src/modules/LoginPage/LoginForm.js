@@ -14,8 +14,9 @@ import './LoginPage.css';
 class LoginForm extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      username: '',
+    const { username } = this.props;
+      this.state = {
+      username: username,
       password: '',
     };
   }
@@ -41,8 +42,8 @@ class LoginForm extends Component {
   }
 
   renderRedirect = () => {
-    const { userConnect } = this.props;
-    if (userConnect === true) {
+    const { userConnect, token } = this.props;
+    if (userConnect === true && token !== '') {
       return <Redirect to="/lobby" />;
     }
     return '';
@@ -83,12 +84,16 @@ class LoginForm extends Component {
 
 LoginForm.propTypes = {
   t: PropTypes.func.isRequired,
+  username: PropTypes.string,
   fetchLogin: PropTypes.func.isRequired,
+  token: PropTypes.string,
   hasErrored: PropTypes.bool,
   userConnect: PropTypes.bool,
 };
 
 LoginForm.defaultProps = {
+  token: '',
+  username: '',
   hasErrored: false,
   userConnect: false,
 };
@@ -96,16 +101,20 @@ LoginForm.defaultProps = {
 const mapStateToProps = (state) => {
   if (state.user.error_login) {
     return {
+      token: state.user.token,
       hasErrored: true,
       userConnect: false,
     };
   } if (state.user.id) {
     return {
+      token: state.user.token,
+      username: state.user.username,
       hasErrored: false,
       userConnect: true,
     };
   }
   return {
+    token: state.user.token,
     hasErrored: false,
     userConnect: false,
   };
