@@ -57,7 +57,7 @@ class CreateAccount extends Component {
   renderRedirect = () => {
     const { userConnect } = this.props;
     if (userConnect === true) {
-      return <Redirect to="/lobby" />;
+      return <Redirect to="/" />;
     }
     return '';
   }
@@ -83,13 +83,13 @@ class CreateAccount extends Component {
           <div className="login_block">
             <FormControl>
               <InputLabel htmlFor="component-simple" style={{ color: 'black' }}>{ t('USERNAME') }</InputLabel>
-              <Input id="component-simple" name="username" value={username} onChange={this.handleChange} required />
+              <Input name="username" value={username} onChange={this.handleChange} required />
             </FormControl>
           </div>
           <div className="login_block">
             <FormControl error={!(!errorMatchPwd)}>
               <InputLabel htmlFor="component-simple" style={{ color: 'black' }}>{ t('PASSWORD') }</InputLabel>
-              <Input id="component-simple" name="password" value={password} onChange={this.handleChange} type="password" required />
+              <Input name="password" value={password} onChange={this.handleChange} type="password" required />
               <FormHelperText style={(!errorMatchPwd) ? { display: 'none' } : { display: 'block' }} id="component-error-text">{(errorMatchPwd) ? errorMessage : ''}</FormHelperText>
             </FormControl>
           </div>

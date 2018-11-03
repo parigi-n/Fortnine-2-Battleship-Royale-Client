@@ -57,6 +57,7 @@ export const createFetch = data => (dispatch) => {
     }
     throw new Error('Network response was not ok.');
   }).then((json) => {
+    if (token == null) token = '';
     dispatch(loginSuccess(token, json.id, json.email, json.username));
   }).catch(() => {
     dispatch(createAccountError(true));
