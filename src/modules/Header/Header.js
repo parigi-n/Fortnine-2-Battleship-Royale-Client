@@ -41,7 +41,7 @@ class Header extends Component {
 
   render() {
     const {
-      t, username,
+      t, username, token
     } = this.props;
     return (
       <AppBar position="static">
@@ -50,7 +50,7 @@ class Header extends Component {
           <h1 className="App-title">{t('TITLE')}</h1>
           <div className="user-card">
             {
-          (username === '')
+          (username === '' || (username !== '' && token === ''))
             ? <Link to="/createAccount">{t('CREATE')}</Link>
             : <span onKeyPress={this.handleKeyPress} role="button" tabIndex={0} className="link_text" onClick={this.disconnect}>{`${username} ${t('DISCONNECT')}`}</span>
         }
