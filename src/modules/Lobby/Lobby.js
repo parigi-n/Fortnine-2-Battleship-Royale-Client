@@ -12,6 +12,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import IconButton from '@material-ui/core/IconButton';
+import SvgIcon from '@material-ui/core/SvgIcon';
 import grey from '@material-ui/core/colors/grey';
 import CustomButton from '../CustomMaterialUIComponent/CustomButton';
 import getRoomFetch from '../../Actions/room';
@@ -34,28 +36,32 @@ class Lobby extends Component {
     super(props);
     this.state = {};
     const { token, addSocketDispatch, socket } = this.props;
-    const tokenCode = token.split(' ')[1];
-    if (!socket) {
-      const socketTmp = io.connect('http://188.166.50.184:4242', {
-        query: {
-          token: tokenCode,
-        },
-      });
-      socketTmp.on('error', () => {
-      });
-      socketTmp.on('connect_failed', () => {
-      });
-      socketTmp.on('ready', () => {
-        addSocketDispatch(socketTmp);
-      });
+    if (token !== '') {
+      const tokenCode = token.split(' ')[1];
+      if (!socket) {
+        const socketTmp = io.connect('http://localhost:4242', {
+          query: {
+            token: tokenCode,
+          },
+        });
+        socketTmp.on('error', () => {
+        });
+        socketTmp.on('connect_failed', () => {
+        });
+        socketTmp.on('ready', () => {
+          addSocketDispatch(socketTmp);
+        });
+      }
     }
   }
 
   componentDidMount() {
     const { token } = this.props;
-    getRoomFetch(token, (arrayRooms) => {
-      this.setState({ datas: arrayRooms });
-    });
+    if (token !== '') {
+      getRoomFetch(token, (arrayRooms) => {
+        this.setState({ datas: arrayRooms });
+      });
+    }
   }
 
   redirection = () => {
@@ -71,6 +77,7 @@ class Lobby extends Component {
     if (!datas) {
       return (
         <div className="Lobby" align="center">
+          { this.redirection() }
           <CircularProgress className="center" size={100} style={{ color: grey[900] }} />
         </div>
       );
@@ -102,6 +109,13 @@ class Lobby extends Component {
           </Table>
         </Paper>
         <Link style={{ textDecoration: 'none' }} to="/createRoom"><CustomButton marginTop={20} text="ADDROOM" /></Link>
+        <div>
+          <IconButton aria-label="Delete" onClick={() => { window.location.reload(); }}>
+            <SvgIcon>
+              <path d="M9 13.5c-2.49 0-4.5-2.01-4.5-4.5S6.51 4.5 9 4.5c1.24 0 2.36.52 3.17 1.33L10 8h5V3l-1.76 1.76C12.15 3.68 10.66 3 9 3 5.69 3 3.01 5.69 3.01 9S5.69 15 9 15c2.97 0 5.43-2.16 5.9-5h-1.52c-.46 2-2.24 3.5-4.38 3.5z" />
+            </SvgIcon>
+          </IconButton>
+        </div>
       </div>
     );
   }

@@ -70,11 +70,8 @@ export const disconnectFetch = token => (dispatch) => {
     headers: {
       Authorization: token,
     },
-  }).then((response) => {
-    if (response.ok) {
-      dispatch(loginDisconnect(true));
-    }
-    throw new Error('Network response was not ok.');
+  }).then(() => {
+    dispatch(loginDisconnect(true));
   }).catch(() => {
   });
 };

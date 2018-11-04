@@ -13,7 +13,7 @@ const getRoomFetch = (token, callback) => {
     if (response.ok) {
       return response.json();
     }
-    throw new Error('Network response was not ok.');
+    throw new Error(response.status);
   }).then((json) => {
     callback(json);
   }).catch(() => {
