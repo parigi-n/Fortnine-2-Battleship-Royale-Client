@@ -30,7 +30,7 @@ To deploy our app you will have to do the following instructions
 ```
 npm install
 npm run build
-serve -s build -p 80
+serve -s build -l 80
 ```
 And then you will be able to access our web app by writing localhost on your browser
 
