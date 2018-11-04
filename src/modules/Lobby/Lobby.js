@@ -39,7 +39,7 @@ class Lobby extends Component {
     if (token !== '') {
       const tokenCode = token.split(' ')[1];
       if (!socket) {
-        const socketTmp = io.connect('http://localhost:4242', {
+        const socketTmp = io.connect('http://188.166.50.184:4242', {
           query: {
             token: tokenCode,
           },
