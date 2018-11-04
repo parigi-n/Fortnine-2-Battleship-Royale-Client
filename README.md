@@ -33,3 +33,5 @@ npm run build
 serve -s build -p 80
 ```
 And then you will be able to access our web app by writing localhost on your browser
+
+Our client is accessible at all times with this URL : http://188.166.50.184
