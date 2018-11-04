@@ -28,7 +28,7 @@ export const loginLoading = loading => ({
 
 export const loginFetch = data => (dispatch) => {
   let token = '';
-  fetch('http://localhost:3000/auth/login', {
+  fetch('http://188.166.50.184:3000/auth/login', {
     method: 'POST',
     body: data,
   }).then((response) => {
@@ -47,7 +47,7 @@ export const loginFetch = data => (dispatch) => {
 
 export const createFetch = data => (dispatch) => {
   let token = '';
-  fetch('http://localhost:3000/auth/register', {
+  fetch('http://188.166.50.184:3000/auth/register', {
     method: 'POST',
     body: data,
   }).then((response) => {
@@ -65,7 +65,7 @@ export const createFetch = data => (dispatch) => {
 };
 
 export const disconnectFetch = token => (dispatch) => {
-  fetch('http://localhost:3000/auth/logout', {
+  fetch('http://188.166.50.184:3000/auth/logout', {
     method: 'GET',
     headers: {
       Authorization: token,

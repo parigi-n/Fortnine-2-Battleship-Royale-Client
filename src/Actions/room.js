@@ -4,7 +4,7 @@ export const joinRoom = idroom => ({
 });
 
 const getRoomFetch = (token, callback) => {
-  fetch('http://localhost:3000/rooms', {
+  fetch('http://188.166.50.184:3000/rooms', {
     method: 'GET',
     headers: {
       Authorization: token,

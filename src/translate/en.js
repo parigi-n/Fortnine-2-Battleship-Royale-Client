@@ -12,6 +12,7 @@ export default {
     ERROR: 'Bad Username or Password please retry',
   },
   CreateAccount: {
+    INFOPWD: 'Your password must contain at least 8 characters and one uppercase character',
     USERNAME: 'Username',
     PASSWORD: 'Password',
     LOGIN: 'You already have an account login',

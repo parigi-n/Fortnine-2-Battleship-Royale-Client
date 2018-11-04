@@ -100,6 +100,7 @@ class CreateAccount extends Component {
               <FormHelperText style={(!errorMatchPwd) ? { display: 'none' } : { display: 'block' }} id="component-error-text">{(errorMatchPwd) ? errorMessage : ''}</FormHelperText>
             </FormControl>
           </div>
+          <p>{t('INFOPWD')}</p>
           <CustomButton type="submit" marginTop={20} text="CREATE" />
           <p>
             <Link to="/">{t('LOGIN')}</Link>
