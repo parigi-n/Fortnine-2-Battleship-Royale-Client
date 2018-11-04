@@ -1,5 +1,5 @@
 
-# Fortnine 2 Shifumi
+# Fortnine 2 Shifumi Client
 
 Our project is a web app which allows you to play the famous game shifumi online with other people, you can create room and wait for an opponent or directly join a room and play.
 
